@@ -14,3 +14,6 @@ This task of assigning threads to different CPU core is done using a thread sche
 - Race condition
 - Reentrant lock: A reentrant lock is one where a process can claim the lock multiple times without blocking on itself.
 - Deadlocks
+
+### States of a thread
+![thread_states.png](..%2F..%2F..%2FDownloads%2Fthread_states.png)
