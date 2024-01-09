@@ -28,13 +28,21 @@ public class Main {
 
         Runnable produceTask = () -> {
             for(int i = 0; i < 50; i++){
-                producer.produce();
+                try {
+                    producer.produce();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
             System.out.println("Done producing");
         };
         Runnable consumeTask = () -> {
             for(int i = 0; i < 50; i++){
-                consumer.consume();
+                try {
+                    consumer.consume();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
             System.out.println("Done consuming");
         };

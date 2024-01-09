@@ -2,7 +2,7 @@ public class ProducerConsumer {
     private static int count = 0;
 
     private static  int[] buffer = new int[10];
-    private Object lock;
+    private static final Object lock = new Object();
 
     public Producer producer() {
         return new Producer();
@@ -13,17 +13,28 @@ public class ProducerConsumer {
     }
 
     public static class Producer {
-        public void produce() {
-            while(isFull(buffer)){}
-            buffer[count++] = 1;
+        public void produce() throws InterruptedException {
+            synchronized (lock) {
+                if (isFull(buffer)) {
+                    lock.wait();
+                }
+                buffer[count++] = 1;
+                lock.notify();
+            }
         }
     }
 
     public static class Consumer {
-        public void consume() {
-            while(isEmpty(buffer)){}
-            buffer[--count] = 0;
+        public void consume() throws InterruptedException {
+            synchronized (lock) {
+                if (isEmpty(buffer)) {
+                    lock.wait();
+                }
+                buffer[--count] = 0;
+                lock.notify();
+            }
         }
+
     }
 
     private static boolean isEmpty(int[] buffer) {
